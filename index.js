@@ -8,42 +8,71 @@ function getComputerChoice() {
 
 function playRound(userSelection, computerSelection) {
     if (userSelection.toUpperCase() == "ROCK" ) {
+        // Prints message to console and returns winner
         if (computerSelection == ROCK) {
             // Both rock
-            return "Draw!";
+            console.log("Draw!");
+            return "None";
         } else if (computerSelection == SCISSORS) {
             // rock vs scissor
-            return "You win! Rock beats Scissor";
+            console.log("You win! Rock beats Scissor");
+            return "User";
         } else {
             // rock vs paper
-            return "You lose! Paper beats Rock";
+            console.log("You lose! Paper beats Rock")
+            return "Computer";
         }
     } else if (userSelection.toUpperCase() == "PAPER") {
         if (computerSelection == ROCK) {
             // paper vs rock
-            return "You win! Paper beats Rock";
+            console.log("You win! Paper beats Rock");
+            return "User";
         } else if (computerSelection == SCISSORS) {
             // paper vs scissor
-            return "You lose! Scissor beats Paper";
+            console.log();
+            return "Computer";
         } else {
             // paper vs paper
-            return "Draw!";
+            console.log("Draw!");
+            return "None";
         }
     } else if (userSelection.toUpperCase() == "SCISSORS") {
         if (computerSelection == ROCK) {
             // scissors vs rock
-            return "You lose! Rock beats Scissor";
+            console.log("You lose! Rock beats Scissor");
+            return "Computer";
         } else if (computerSelection == SCISSORS) {
             // scissors vs scissor
-            return "Draw!";
+            console.log("Draw!");
+            return "None";
         } else {
             // scissors vs paper
-            return "You win! Scissors beats Paper";
+            console.log("You win! Scissors beats Paper");
+            return "User";
         }
     }
 }
 
-let userSelection = prompt("Choose rock, paper or scissors");
-let computerSelection = getComputerChoice();
+function game() {
+    let userRounds = 0;
+    let compRounds = 0;
 
-console.log(playRound(userSelection, computerSelection));
+    while(userRounds < 5 && compRounds < 5) {
+        let userSelection = prompt("Choose rock, paper or scissors");
+        let computerSelection = getComputerChoice();
+        winner = playRound(userSelection, computerSelection);
+        console.log("winner", winner)
+        if (winner == "Computer") {
+            compRounds++;
+        } else if (winner == "User") {
+            userRounds++;
+        }
+        if (userRounds == 5) {
+            return "First to Five. You Win!"
+        } else if (compRounds == 5) {
+            return "First to Five. You Lose!"          
+        }
+    }
+}
+
+console.log(game());
