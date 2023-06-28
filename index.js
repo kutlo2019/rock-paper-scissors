@@ -2,6 +2,9 @@ const SCISSORS = 0;
 const ROCK = 1;
 const PAPER = 2;
 
+let USER_SCORE = 0;
+let COMPUTER_SCORE = 0;
+
 function getComputerChoice() {
     return Math.floor(Math.random() * 3);
 }
@@ -11,91 +14,78 @@ function playRound(userSelection, computerSelection) {
         // Prints message to console and returns winner
         if (computerSelection == ROCK) {
             // Both rock
-            console.log("Draw!");
             return "None";
         } else if (computerSelection == SCISSORS) {
             // rock vs scissor
-            console.log("You win! Rock beats Scissor");
             return "User";
         } else {
             // rock vs paper
-            console.log("You lose! Paper beats Rock")
             return "Computer";
         }
     } else if (userSelection.toUpperCase() == "PAPER") {
         if (computerSelection == ROCK) {
             // paper vs rock
-            console.log("You win! Paper beats Rock");
             return "User";
         } else if (computerSelection == SCISSORS) {
             // paper vs scissor
-            console.log();
             return "Computer";
         } else {
             // paper vs paper
-            console.log("Draw!");
             return "None";
         }
     } else if (userSelection.toUpperCase() == "SCISSORS") {
         if (computerSelection == ROCK) {
             // scissors vs rock
-            console.log("You lose! Rock beats Scissor");
             return "Computer";
         } else if (computerSelection == SCISSORS) {
             // scissors vs scissor
-            console.log("Draw!");
             return "None";
         } else {
             // scissors vs paper
-            console.log("You win! Scissors beats Paper");
             return "User";
         }
     }
 }
 
 const buttons = document.querySelectorAll('button');
+const screen = document.querySelector('.screen');
+const beginGame = document.createElement('h2');
+beginGame.innerHTML = 'Click a button to Start!' 
+screen.appendChild(beginGame);
 
 buttons.forEach(button => {
     button.addEventListener('click', e => {
+        const userBoard = document.querySelector('#player-score');
+        const computerBoard = document.querySelector('#computer-score');
         const userSelection = e.target.id;
         const computerSelection = getComputerChoice();
         const winner = playRound(userSelection, computerSelection);
         const result = document.createElement('h2');
         if (winner === 'None') {
             result.innerHTML = "Result is a Draw";
+        } else if (winner === 'User') {
+            result.innerHTML = `You have won the round!`;
+            USER_SCORE++;
+            userBoard.innerHTML = USER_SCORE;
         } else {
-            result.innerHTML = `The winner is the ${winner}!`;
+            result.innerHTML = 'You lost, Comp wins :-(';
+            COMPUTER_SCORE++;
+            computerBoard.innerHTML = COMPUTER_SCORE;
         }
-        const screen = document.querySelector('.screen');
-        console.log(screen.children[0])
+
         if (screen.children[0] === undefined) {
+            screen.removeChild(document.querySelector('h2'));
             screen.appendChild(result);
         } else {
             screen.replaceChild(result, screen.childNodes[0]);
         }
+
+        if (COMPUTER_SCORE == 5) {
+            alert(":(:( Computer Wins!!! ):):");
+            location.reload();
+        } else if (USER_SCORE == 5) {
+            alert("!!! You Win !!!");
+            location.reload();
+        }
     });
 });
-
-function game() {
-    let userRounds = 0;
-    let compRounds = 0;
-
-    while(userRounds < 5 && compRounds < 5) {
-        let userSelection = prompt("Choose rock, paper or scissors");
-        let computerSelection = getComputerChoice();
-        winner = playRound(userSelection, computerSelection);
-        console.log("winner", winner)
-        if (winner == "Computer") {
-            compRounds++;
-        } else if (winner == "User") {
-            userRounds++;
-        }
-        if (userRounds == 5) {
-            return "First to Five. You Win!"
-        } else if (compRounds == 5) {
-            return "First to Five. You Lose!"          
-        }
-    }
-}
-
-console.log(game());
